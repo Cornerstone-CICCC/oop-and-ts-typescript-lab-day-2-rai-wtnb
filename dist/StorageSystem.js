@@ -1,3 +1,4 @@
+"use strict";
 // 🔄 Multi-Type Storage System
 // 📦 Create a system that can store and manage different types of data.
 //
@@ -7,51 +8,44 @@
 // 4. Implement a method `getItems` that returns all stored items.
 // 5. Implement a method `findItem` that searches for an item by a given property value.
 // 6. Implement a method `updateItem` that updates an item by its property value.
-
-class MyStorage<T, U> {
-  items: T[] = [];
-
-  addItem(item: T): string {
-    this.items.push(item);
-    return `${item} added to storage.`;
-  }
-
-  getItems(): T[] {
-    return this.items;
-  }
-
-  removeItem(item: T): string {
-    const index = this.items.indexOf(item);
-    if (index === -1) {
-      throw "invalid item id";
+class MyStorage {
+    constructor() {
+        this.items = [];
     }
-    this.items.splice(index, 1);
-    return `${item} removed from storage.`;
-  }
-
-  findItem<U extends keyof T>(prop: U, val: T[U]): T | undefined {
-    return this.items.find((item) => item[prop] === val);
-  }
-
-  updateItem<U extends keyof T>(prop: U, id: T[U], update: T): string {
-    const item = this.items.find((item) => item[prop] === id);
-    if (!item) throw "invalid item id";
-    Object.assign(item, update);
-    return `${item} updated successfully.`;
-  }
+    addItem(item) {
+        this.items.push(item);
+        return `${item} added to storage.`;
+    }
+    getItems() {
+        return this.items;
+    }
+    removeItem(item) {
+        const index = this.items.indexOf(item);
+        if (index === -1) {
+            throw "invalid item id";
+        }
+        this.items.splice(index, 1);
+        return `${item} removed from storage.`;
+    }
+    findItem(prop, val) {
+        return this.items.find((item) => item[prop] === val);
+    }
+    updateItem(prop, id, update) {
+        const item = this.items.find((item) => item[prop] === id);
+        if (!item)
+            throw "invalid item id";
+        Object.assign(item, update);
+        return `${item} updated successfully.`;
+    }
 }
-
 // Test cases
-const numberStrStorage = new MyStorage<number, string>();
-
+const numberStrStorage = new MyStorage();
 console.log(numberStrStorage.addItem(10)); // "10 added to storage."
 console.log(numberStrStorage.addItem(20)); // "20 added to storage."
 console.log(numberStrStorage.getItems()); // [10, 20]
 console.log(numberStrStorage.removeItem(10)); // "10 removed from storage."
 console.log(numberStrStorage.getItems()); // [20]
-
-const userStorage = new MyStorage<{ id: number; name: string }, string>();
-
+const userStorage = new MyStorage();
 console.log(userStorage.addItem({ id: 1, name: "Alice" })); // "User Alice added."
 console.log(userStorage.addItem({ id: 2, name: "Bob" })); // "User Bob added."
 console.log(userStorage.getItems()); // [{ id: 1, name: "Alice" }, { id: 2, name: "Bob" }]
